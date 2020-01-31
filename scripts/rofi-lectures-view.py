@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from courses import Courses
-from rofi import rofi
+from gilles_rofi import rofi
 
 lectures = Courses().current.lectures
 

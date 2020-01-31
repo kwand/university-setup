@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from rofi import rofi
+from gilles_rofi import rofi
 
 from courses import Courses
 

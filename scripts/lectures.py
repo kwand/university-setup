@@ -8,10 +8,10 @@ import re
 import subprocess
 
 
-from config import get_week, DATE_FORMAT, CURRENT_COURSE_ROOT
+from config import get_week, DATE_FORMAT, CURRENT_COURSE_ROOT, TERMINAL_EMULATOR
 
 # TODO
-locale.setlocale(locale.LC_TIME, "nl_BE.utf8")
+# locale.setlocale(locale.LC_TIME, "nl_BE.utf8")
 
 
 def number2filename(n):
@@ -45,9 +45,9 @@ class Lecture():
 
     def edit(self):
         subprocess.Popen([
-            "x-terminal-emulator",
-            "-e", "zsh", "-i", "-c",
-            f"\\vim --servername kulak --remote-silent {str(self.file_path)}"
+            TERMINAL_EMULATOR,
+            "-e",  "fish", "-i", "-c",
+            f"vim --servername uni --remote-silent {str(self.file_path)}"
         ])
 
     def __str__(self):
@@ -165,26 +165,27 @@ if __name__ == '__main__':
     if command == 'new':
         lectures.new_lecture()
 
-    if command == 'init':
-        from utils import beautify
-        course_title = beautify(lectures.root.stem)
-        lines = [r'\documentclass[a4paper]{article}',
-                 r'\input{../preamble.tex}',
-                 fr'\title{{{course_title}}}',
-                 r'\begin{document}',
-                 r'    \maketitle',
-                 r'    \tableofcontents',
-                 r'    % start lectures',
-                 r'    % end lectures',
-                 r'\end{document}'
-                ]
-        lectures.master_file.touch()
-        lectures.master_file.write_text('\n'.join(lines))
+    # if command == 'init':
+    #     from utils import beautify
+    #     course_title = beautify(lectures.root.stem)
 
-        (lectures.root / 'master.tex.latexmain').touch()
+    #     lines = [r'\documentclass[a4paper]{article}',
+    #              r'\input{../preamble.tex}',
+    #              fr'\title{{{course_title}}}',
+    #              r'\begin{document}',
+    #              r'    \maketitle',
+    #              r'    \tableofcontents',
+    #              r'    % start lectures',
+    #              r'    % end lectures',
+    #              r'\end{document}'
+    #             ]
+    #     lectures.master_file.touch()
+    #     lectures.master_file.write_text('\n'.join(lines))
 
-        info_file = lectures.root / 'info.yaml'
-        info_file.touch()
-        info_file.write_text(f"title: '{course_title}'")
+    #     (lectures.root / 'master.tex.latexmain').touch()
 
-        (lectures.root / 'figures').mkdir()
+    #     # info_file = lectures.root / 'info.yaml'
+    #     # info_file.touch()
+    #     # info_file.write_text(f"title: '{course_title}'")
+
+    #     (lectures.root / 'figures').mkdir()
